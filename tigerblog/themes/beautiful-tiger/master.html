@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base href="{{blog.config.host}}/">
+
+	<!-- META -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- LINKS -->
+	<link rel="icon" type="image/x-icon" href="static/images/logo-white.png">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+	{% block customcss %}{% endblock %}
+	
+	<title> {% block title %} Tiger Blog Engine{% endblock %} </title>
+
+	{% block seoTags %}
+	<!-- META TAGS -->
+	<meta name="title" content="TigerTeamX">
+    <meta name="keywords" content="{% for tag in blog.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}"/>
+    <meta name="description" content="{{ description }}">	
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{url}}">
+    <meta property="og:title" content="TigerTeamX">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{blog.config.host}}/static/images/nav-logo.svg">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{url}}">
+    <meta property="twitter:title" content="TigerTeamX">
+    <meta property="twitter:description" content="{{ description }}">
+    <meta property="twitter:image" content="{{blog.config.host}}/static/images/nav-logo.svg">
+
+	<!-- CANONICAL URL -->
+	<link rel="canonical" href="{{url}}" />
+
+	<!-- JSON LD -->
+	<script type="application/ld+json">
+		{ 
+			"@context": "https://schema.org", 
+			"@type": "BlogPosting",
+			"name": "Tiger Blog Engine",
+			"image": "{{blog.config.host}}static/images/favicon.ico",
+			"keywords": "blogs developer frontend backend",
+			"url": "{{ url }}",
+			"description": "Tiger Blog Engine"
+       }
+	  </script>
+	  {% endblock %}
+	<plugins></plugins>
+</head>
+<body>
+	<div>
+		<nav>
+			<div class="nav-inner">
+				<a href="" class="logo">
+					<img src="static/images/nav-logo.svg" alt="">
+				</a>
+				<div class="nav-links">
+				{% include "navlinks.html" %}
+				</div>
+			</div>
+		</nav>
+		<div class="blogs-content-wrapper">
+			<div class="page-content">
+				<header>
+					<div class="header-inner">
+						{% block header %}{% endblock %}
+					</div>
+				</header>
+				{% block body %}{% endblock %}
+			</div>
+			<aside>
+				<div class="aside-inner">
+					{% include "sidebar.html" %}
+				</div>
+			</aside>
+		</div>
+	</div>
+
+	{% block bottomMoreContent %}{% endblock %}
+
+	<footer>
+		<div class="footer-inner">
+			<!-- Consider not to remove this as this is free and open source -->
+			<p>Powered By TigerBlogEngine Copyright @ 2023 <a href="https://TigerTeamX.com">TigerTeamX.com</a></p>
+		</div>
+	</footer>
+
+	{% block customjs %}{% endblock %}
+
+	{% if blog.config.toolelFeedbackId != "" %}
+	<script defer data-show-after="{{blog.config.toolelFeedbackShowAfter}}" data-show-thank-you="{{blog.config.toolelFeedbackShowThanks}}" data-id="{{blog.config.toolelFeedbackId}}" src="https://toolel.com/js/toolel_feedback.js"></script>
+	{% endif %}
+
+	{% if blog.config.plausibleDomain != "" %}
+	<script defer data-domain="{{ blog.config.plausibleDomain }}" src="https://plausible.io/js/script.js"></script>
+	{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "master.html" %}
+
+{% block customcss %}
+<link rel="stylesheet" href="static/css/style.css">
+{% endblock %}
+
+{% block title %} {{page.title}} | TigerTeamX {% endblock %}
+
+{% block header %}
+<h1>{{ page.title }}</h1>
+<p>Fill up the form and the team will get back you to within 24 hrs</p>
+{% endblock %}
+
+{% block aside %}
+	<b>Tags:</b> <br>
+	{% for tag in page.tags %}
+		<a href="{{tag.url}}">{{tag.title}}</a>	
+	{% endfor %}
+{% endblock %}
+
+{% block body %}
+<div class="blog-content">
+	<form action="">
+        <div class="two-column">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input id="firstName" type="text" placeholder="Will Smith" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" type="text" placeholder="Will Smith" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="willsmith@example.com" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="phone-number">Phone Number</label>
+            <input id="phone-number" type="tel" placeholder="+123456789" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message"></textarea>
+        </div>
+        <button class="btn btn-orange">Send Message</button>
+    </form>
+</div>
+{% endblock body %}
+
+{% block customjs %}
+
+{% endblock %}

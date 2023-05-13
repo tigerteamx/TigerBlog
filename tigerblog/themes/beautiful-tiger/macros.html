@@ -1,0 +1,21 @@
+{% macro blog_card(itemsToLoopThrough, bcg) %}
+    {% for item in itemsToLoopThrough %}
+	<div class="blog-card">
+		<a href="{{item.url}}" class="card-img">
+			{% if item.image %}
+			<img src="{{item.image}}" alt="">
+			{% else %}
+			<img src="https://unsplash.it/1600/900" alt="">
+			{% endif %}
+		</a>
+		<h3 style="background-color: {{bcg}}">
+			<a href="{{item.url}}">{{ item.title }}</a>
+		</h3>
+		<div class="tags">
+			{% for tag in item.tags %}
+				<a href="{{tag.url}}">{{tag.title}}</a>
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+{% endmacro %}

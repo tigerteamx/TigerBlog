@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+{% from './macros.html' import blog_card %}
+
+{% block customcss %}
+
+{% endblock %}
+
+{% block title %}
+{% if tag %} {{tag.title}} | TigerTeamX Blog {% else %} TigerTeamX Blog {% endif %}
+{% endblock %}
+
+{% block header %}
+{{ blog.intro|safe }}
+{% endblock %}
+
+{% block body %}
+<div class="blog-list">
+	{{blog_card(pages)}}
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+<div class="sidebar-md">
+	{{ blog.sidebar|safe }}
+</div>
+<h2 style="margin-bottom: .6rem;">Tags</h2>
+<div class="tags">
+	{% for tag in blog.tags %}
+		<a href="{{tag.url}}">{{tag.title}}</a>	
+	{% endfor %}
+</div>
