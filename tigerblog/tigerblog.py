@@ -159,7 +159,7 @@ class Blog:
             for tag in page_data['tags']:
                 tags.append(Tag(
                     title=tag,
-                    slug=f'/tags/{slugify(tag)}',
+                    slug=f'tags/{slugify(tag)}',
                     url=f"{self.config['host']}/tags/{slugify(tag)}/"),
                 )
 
@@ -320,7 +320,7 @@ def main(config):
             f"{blog.config['tmp']}/{tag.slug}/index.html",
             blog.get_pages_with_tag(tag),
             tag,
-            f'{blog.config["host"]}/{tag.slug}/',
+            tag.url,
         )
     blog.copy_files()
 

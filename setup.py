@@ -9,10 +9,10 @@ setuptools.setup(
     packages=["tigerblog"],
     package_dir={"tigerblog": "tigerblog"},
     package_data={
-        'tigerblog': ['config.json'],
+        'tigerblog': ['config.json', 'themes/*'],
         'tigerblog.themes.abc': ["**"],
     },
-    version="0.1.3",
+    version="0.1.4",
     author="Martin F",
     author_email="pypi.org@tigerteamx.com",
     description="Simplest Blog Engine for Developers",
