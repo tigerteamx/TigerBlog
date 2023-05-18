@@ -35,7 +35,7 @@
 		"@type": "BlogPosting",
 		"name": {% if page.title %}"{{ page.title }}"{% else %}"TigerTeamX Blogs"{% endif %},
 		"image": "{{blog.config.host}}static/images/favicon.ico",
-		"keywords": {% if page.tags %}"{% for tag in page.tags %}{{ tag.title }} {% endfor %}"{% endif %},
+		"keywords": {% if page.tags %}"{% for tag in page.tags %}{{ tag.title }} {% endfor %}"{% else %}""{% endif %},
 		"url": "{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}",
 		"author": "{% if page.author %}{{page.author}}{% else %}TigerTeamX{% endif %}",
 		"description": {% if page.description %}"{{page.description}}"{% else %}"Tiger Team X Blogs"{% endif %}
