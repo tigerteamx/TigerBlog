@@ -93,7 +93,7 @@ SITEMAP_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
 	{% for page in pages %}
 	<url>
         <loc>{{page.url}}</loc>
-        <lastmod>{{page.date.isoformat()}}</lastmod>
+        <lastmod>{{page.date.strftime("%Y-%m-%d")}}</lastmod>
 	</url>
 	{% endfor %}
 	{% for tag in tags %}
