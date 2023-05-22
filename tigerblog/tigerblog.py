@@ -128,9 +128,6 @@ class Blog:
         elif Path(f"{LIB_DIR}/{self.config['theme']}"):
             self.config['theme'] = f"{LIB_DIR}/{self.config['theme']}"
 
-        self.sidebar = ""
-        self.intro = ""
-
         self.tags = []
         self.env = Environment(
             loader=FileSystemLoader(["templates/", self.config['theme']]),
@@ -145,14 +142,6 @@ class Blog:
         self.pages = []
         for fn in self.files:
             if not fn.endswith('.md'):
-                continue
-
-            if fn == f"{self.config['content_path']}/sidebar.md":
-                self.sidebar = self.markdown(read(fn))
-                continue
-
-            if fn == f"{self.config['content_path']}/intro.md":
-                self.intro = self.markdown(read(fn))
                 continue
 
             page_data = read_page(fn)
