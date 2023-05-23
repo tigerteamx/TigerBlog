@@ -120,6 +120,7 @@ class Blog:
     def __init__(self, config, markdown=markdown):
         self.config = config
         self.markdown = markdown
+
         if not Path(self.config['theme']).is_dir() and not Path(f"{LIB_DIR}/{self.config['theme']}"):
             raise Exception("Could not find theme directory")
         elif Path(self.config['theme']).is_dir():
@@ -128,31 +129,21 @@ class Blog:
         elif Path(f"{LIB_DIR}/{self.config['theme']}"):
             self.config['theme'] = f"{LIB_DIR}/{self.config['theme']}"
 
-        self.sidebar = ""
-        self.intro = ""
-
         self.tags = []
         self.env = Environment(
-            loader=FileSystemLoader(["templates/", self.config['theme']]),
+            loader=FileSystemLoader([self.config.get("templates", "templates/"), self.config['theme']]),
             autoescape=select_autoescape(),
         )
 
         self.files = [
             os.path.join(dp, f)
             for dp, dn, filenames in os.walk(self.config['content_path'])
-            for f in filenames]
+            for f in filenames
+        ]
 
         self.pages = []
         for fn in self.files:
             if not fn.endswith('.md'):
-                continue
-
-            if fn == f"{self.config['content_path']}/sidebar.md":
-                self.sidebar = self.markdown(read(fn))
-                continue
-
-            if fn == f"{self.config['content_path']}/intro.md":
-                self.intro = self.markdown(read(fn))
                 continue
 
             page_data = read_page(fn)
@@ -282,6 +273,30 @@ class Blog:
                 tags=self.tags,
             ))
 
+    def process_static(self):
+        print("Process static..")
+
+        static_path = self.config.get("static", f"{self.config['theme']}/static")
+        theme_static_path = f"{self.config['theme']}/static"
+
+        if any([not static_path, not Path(static_path).is_dir(), Path(static_path) == Path(theme_static_path)]):
+            print("No custom static data")
+            return
+
+        files = [
+            os.path.join(dp, f)
+            for dp, dn, filenames in os.walk(static_path)
+            for f in filenames
+        ]
+
+        for file in files:
+            file_ext = file.split(".")[-1]
+            if file_ext == "css":
+                shutil.copy2(file, f"{theme_static_path}/css")
+
+            if file_ext in ["png", "svg", "jpg", "jpeg", "ico"]:
+                shutil.copy2(file, f"{theme_static_path}/images")
+
 
 def merge_two_folders(root_src_dir, root_dst_dir):
     for src_dir, dirs, files in os.walk(root_src_dir):
@@ -306,6 +321,7 @@ def main(config):
 
     shutil.rmtree(blog.config['tmp'], ignore_errors=True, onerror=None)
     mkdir(blog.config['tmp'])
+    blog.process_static()
 
     blog.write_sitemap()
     blog.write_pages()
@@ -383,7 +399,6 @@ def print_it(config):
     except: # noqa
         print("Error happened when compiling")
         print(format_exc())
-
 
 
 doc = """tigerblog

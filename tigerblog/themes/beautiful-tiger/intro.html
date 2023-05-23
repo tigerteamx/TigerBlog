@@ -1,0 +1,10 @@
+<div class="intro-md">
+	<h2>Tiger Blog Engine</h2>
+	<p>This could be your blog!</p>
+</div>
+<h2 style="margin-bottom: .6rem;">Tags</h2>
+<div class="tags">
+	{% for tag in blog.tags %}
+		<a href="{{tag.url}}">{{tag.title}}</a>	
+	{% endfor %}
+</div>
