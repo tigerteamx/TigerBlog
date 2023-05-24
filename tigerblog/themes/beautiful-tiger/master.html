@@ -9,9 +9,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- LINKS -->
-	<link rel="icon" type="image/x-icon" href="static/images/logo-white.png">
+	<link rel="icon" type="image/x-icon" href="{{blog.logo}}">
 	<link rel="stylesheet" href="static/css/style.css">
-	<link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
 	{% block customcss %}{% endblock %}
 	
 	<title> {% block title %} Tiger Blog Engine{% endblock %} </title>
@@ -26,13 +26,13 @@
     <meta property="og:url" content="{{url}}">
     <meta property="og:title" content="TigerTeamX">
     <meta property="og:description" content="{{ description }}">
-    <meta property="og:image" content="{{blog.config.host}}/static/images/nav-logo.svg">
+    <meta property="og:image" content="{{blog.config.host}}/{{blog.logo}}">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{url}}">
     <meta property="twitter:title" content="TigerTeamX">
     <meta property="twitter:description" content="{{ description }}">
-    <meta property="twitter:image" content="{{blog.config.host}}/static/images/nav-logo.svg">
+    <meta property="twitter:image" content="{{blog.config.host}}/{{blog.logo}}">
 
 	<!-- CANONICAL URL -->
 	<link rel="canonical" href="{{url}}" />
@@ -43,7 +43,7 @@
 			"@context": "https://schema.org", 
 			"@type": "BlogPosting",
 			"name": "Tiger Blog Engine",
-			"image": "{{blog.config.host}}static/images/favicon.ico",
+			"image": "{{blog.config.host}}/{{blog.favicon}}",
 			"keywords": "blogs developer frontend backend",
 			"url": "{{ url }}",
 			"description": "Tiger Blog Engine"
@@ -57,7 +57,7 @@
 		<nav>
 			<div class="nav-inner">
 				<a href="" class="logo">
-					<img src="static/images/nav-logo.svg" alt="">
+					<img src="{{blog.config.host}}/{{blog.logo}}" alt="">
 				</a>
 				<div class="nav-links">
 				{% include "navlinks.html" %}

@@ -4,5 +4,8 @@
 	"templates": "templates",
 	"output": "dist",
 	"theme": "themes/beautiful-tiger",
-	"host": "http://localhost:8000"
+	"host": "http://localhost:8000",
+	"logo": "",
+	"favicon": "",
+	"sidebar_bg": ""
 }

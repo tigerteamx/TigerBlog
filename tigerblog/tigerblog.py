@@ -116,6 +116,20 @@ def markdown(text):
     )
 
 
+def merge_two_folders(root_src_dir, root_dst_dir):
+    for src_dir, dirs, files in os.walk(root_src_dir):
+        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+        if not os.path.exists(dst_dir):
+            os.makedirs(dst_dir)
+
+        for file_ in files:
+            src_file = os.path.join(src_dir, file_)
+            dst_file = os.path.join(dst_dir, file_)
+            if os.path.exists(dst_file):
+                os.remove(dst_file)
+            shutil.copy(src_file, dst_dir)
+
+
 class Blog:
     def __init__(self, config, markdown=markdown):
         self.config = config
@@ -128,6 +142,10 @@ class Blog:
             pass
         elif Path(f"{LIB_DIR}/{self.config['theme']}"):
             self.config['theme'] = f"{LIB_DIR}/{self.config['theme']}"
+
+        self.logo = self.config.get("logo", "static/images/nav-logo.png")
+        self.favicon = self.config.get("favicon", "static/images/favicon.ico")
+        self.sidebar_bg = self.config.get("sidebar_bg", "static/images/aside_logo.svg")
 
         self.tags = []
         self.env = Environment(
@@ -273,43 +291,35 @@ class Blog:
                 tags=self.tags,
             ))
 
-    def process_static(self):
-        print("Process static..")
+    def save_img_to_tmp_static(self, attr: str):
+        file = getattr(self, attr)
 
-        static_path = self.config.get("static", f"{self.config['theme']}/static")
-        theme_static_path = f"{self.config['theme']}/static"
-
-        if any([not static_path, not Path(static_path).is_dir(), Path(static_path) == Path(theme_static_path)]):
-            print("No custom static data")
+        if not Path(file).is_file():
+            print(f"{file} image doesn't exist.")
             return
 
-        files = [
-            os.path.join(dp, f)
-            for dp, dn, filenames in os.walk(static_path)
-            for f in filenames
-        ]
+        if not file.split(".")[-1] in ["png", "jpeg", "jpg", "ico", "svg"]:
+            print(f"{file} image has incorrect type.")
+            return
 
-        for file in files:
-            file_ext = file.split(".")[-1]
-            if file_ext == "css":
-                shutil.copy2(file, f"{theme_static_path}/css")
+        filename = file.split("/")[-1]
+        res_path = f"{self.config['tmp']}/static/images/{filename}"
 
-            if file_ext in ["png", "svg", "jpg", "jpeg", "ico"]:
-                shutil.copy2(file, f"{theme_static_path}/images")
+        shutil.copy2(file, res_path)
+        setattr(self, attr, f"static/images/{filename}")
 
+    def prepare_static(self):
+        print("Prepare static..")
 
-def merge_two_folders(root_src_dir, root_dst_dir):
-    for src_dir, dirs, files in os.walk(root_src_dir):
-        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
-        if not os.path.exists(dst_dir):
-            os.makedirs(dst_dir)
+        if Path(f'{self.config["theme"]}/static').is_dir():
+            shutil.copytree(f'{self.config["theme"]}/static', f"{self.config['tmp']}/static")
 
-        for file_ in files:
-            src_file = os.path.join(src_dir, file_)
-            dst_file = os.path.join(dst_dir, file_)
-            if os.path.exists(dst_file):
-                os.remove(dst_file)
-            shutil.copy(src_file, dst_dir)
+        if Path('static').is_dir():
+            merge_two_folders("static", f"{self.config['tmp']}/static")
+
+        self.save_img_to_tmp_static("logo")
+        self.save_img_to_tmp_static("favicon")
+        self.save_img_to_tmp_static("sidebar_bg")
 
 
 def main(config):
@@ -321,8 +331,8 @@ def main(config):
 
     shutil.rmtree(blog.config['tmp'], ignore_errors=True, onerror=None)
     mkdir(blog.config['tmp'])
-    blog.process_static()
 
+    blog.prepare_static()
     blog.write_sitemap()
     blog.write_pages()
     blog.write_listing(
@@ -339,13 +349,8 @@ def main(config):
             tag,
             tag.url,
         )
+
     blog.copy_files()
-
-    if Path(f'{blog.config["theme"]}/static').is_dir():
-        shutil.copytree(f'{blog.config["theme"]}/static', f"{blog.config['tmp']}/static")
-
-    if Path('static').is_dir():
-        merge_two_folders('static', f"{blog.config['tmp']}/static")
 
     shutil.rmtree(blog.config['output'], ignore_errors=True, onerror=None)
     shutil.copytree(blog.config['tmp'] + "/", blog.config['output'])
