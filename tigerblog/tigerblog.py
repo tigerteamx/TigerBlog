@@ -306,7 +306,7 @@ class Blog:
                 url=f"{self.config['host']}/",
             ))
 
-    def save_custom_static_images_or_defaults(self, attrs: dict):
+    def save_custom_static_images(self, attrs: dict):
         for attr, default in attrs.items():
             file = getattr(self, attr)
 
@@ -324,19 +324,6 @@ class Blog:
             shutil.copy2(file, res_path)
             setattr(self, attr, f"static/images/{filename}")
 
-    def save_custom_static_images(self, attrs: list):
-        for attr in attrs:
-            file = getattr(self, attr)
-
-            if not Path(file).is_file():
-                print(f"{attr} file '{file}' does not exist.")
-                continue
-
-            filename = file.split("/")[-1]
-
-            shutil.copy2(file, f"{self.config['tmp']}/static/images/{filename}")
-            setattr(self, attr, f"static/images/{filename}")
-
     def prepare_static(self):
         print("Prepare static..")
 
@@ -346,7 +333,17 @@ class Blog:
         if Path("static").is_dir():
             merge_two_folders("static", f"{self.config['tmp']}/static")
 
-        self.save_custom_static_images(["logo", "favicon", "sidebar_bg"])
+        attrs_default = {
+            "logo": "static/images/nav-logo.svg",
+            "favicon": "static/images/favicon.ico",
+            "sidebar_bg": "static/images/aside-logo.svg",
+        }
+
+        self.save_custom_static_images(attrs_default)
+
+        print(f"favicon: '{self.favicon}'")
+        print(f"logo: '{self.logo}'")
+        print(f"sidebar_bg: '{self.sidebar_bg}'")
 
 
 def main(config):
