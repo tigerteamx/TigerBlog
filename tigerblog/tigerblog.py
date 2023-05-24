@@ -90,6 +90,10 @@ def read_page(path):
 
 SITEMAP_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">	
+	<url>
+        <loc>{{url}}</loc>
+        <lastmod>{{today.strftime("%Y-%m-%d")}}</lastmod>
+	</url>
 	{% for page in pages %}
 	<url>
         <loc>{{page.url}}</loc>
@@ -280,6 +284,8 @@ class Blog:
                 blog=self,
                 pages=pages,
                 tags=self.tags,
+                today=datetime.today(),
+                url=f"{self.config['host']}/"
             ))
 
 
