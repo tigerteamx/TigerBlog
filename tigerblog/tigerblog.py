@@ -143,13 +143,21 @@ class Blog:
         elif Path(f"{LIB_DIR}/{self.config['theme']}"):
             self.config['theme'] = f"{LIB_DIR}/{self.config['theme']}"
 
-        self.logo = self.config.get("logo", "static/images/nav-logo.png")
-        self.favicon = self.config.get("favicon", "static/images/favicon.ico")
-        self.sidebar_bg = self.config.get("sidebar_bg", "static/images/aside_logo.svg")
+        self.static = self.config.get("static", "static")
+
+        self.title = self.config.get("title", "TigerTeamX")
+        self.description = self.config.get("description", "Tiger Blog Engine")
+        self.type = self.config.get("type", "BlogPosting")
+        self.keywords = self.config.get("keywords", "blogs developer frontend backend")
+        self.name = self.config.get("name", "Tiger Blog Engine")
+
+        self.logo = self.config.get("logo", "")
+        self.favicon = self.config.get("favicon", "")
+        self.sidebar_bg = self.config.get("sidebar_bg", "")
 
         self.tags = []
         self.env = Environment(
-            loader=FileSystemLoader([self.config.get("templates", "templates/"), self.config['theme']]),
+            loader=FileSystemLoader([self.config.get("templates", "templates"), self.config['theme']]),
             autoescape=select_autoescape(),
         )
 
@@ -291,22 +299,23 @@ class Blog:
                 tags=self.tags,
             ))
 
-    def save_img_to_tmp_static(self, attr: str):
-        file = getattr(self, attr)
+    def save_custom_static_images(self, attrs: dict):
+        for attr, default in attrs.items():
+            file = getattr(self, attr)
 
-        if not Path(file).is_file():
-            print(f"{file} image doesn't exist.")
-            return
+            if not Path(file).is_file():
+                setattr(self, attr, default)
+                continue
 
-        if not file.split(".")[-1] in ["png", "jpeg", "jpg", "ico", "svg"]:
-            print(f"{file} image has incorrect type.")
-            return
+            if not file.split(".")[-1] in ["png", "jpeg", "jpg", "ico", "svg"]:
+                setattr(self, attr, default)
+                continue
 
-        filename = file.split("/")[-1]
-        res_path = f"{self.config['tmp']}/static/images/{filename}"
+            filename = file.split("/")[-1]
+            res_path = f"{self.config['tmp']}/static/images/{filename}"
 
-        shutil.copy2(file, res_path)
-        setattr(self, attr, f"static/images/{filename}")
+            shutil.copy2(file, res_path)
+            setattr(self, attr, f"static/images/{filename}")
 
     def prepare_static(self):
         print("Prepare static..")
@@ -314,12 +323,20 @@ class Blog:
         if Path(f'{self.config["theme"]}/static').is_dir():
             shutil.copytree(f'{self.config["theme"]}/static', f"{self.config['tmp']}/static")
 
-        if Path('static').is_dir():
-            merge_two_folders("static", f"{self.config['tmp']}/static")
+        if Path(self.static).is_dir():
+            merge_two_folders(self.static, f"{self.config['tmp']}/static")
 
-        self.save_img_to_tmp_static("logo")
-        self.save_img_to_tmp_static("favicon")
-        self.save_img_to_tmp_static("sidebar_bg")
+        attrs_default = {
+            "logo": "static/images/nav-logo.svg",
+            "favicon": "static/images/favicon.ico",
+            "sidebar_bg": "static/images/aside-logo.svg",
+        }
+
+        self.save_custom_static_images(attrs_default)
+
+        print(f"favicon: '{self.favicon}'")
+        print(f"logo: '{self.logo}'")
+        print(f"sidebar_bg: '{self.sidebar_bg}'")
 
 
 def main(config):

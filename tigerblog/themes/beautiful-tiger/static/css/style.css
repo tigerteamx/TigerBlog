@@ -115,7 +115,6 @@ header {
     text-align: left;
     padding: 2rem;
     background-color: var(--primary-text-color);
-    background-image: url('/blog/static/images/aside-logo.svg');
     background-size: contain;
     background-position: top right;
     background-repeat: no-repeat;

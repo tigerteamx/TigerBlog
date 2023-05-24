@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="static/css/single-blog.css">
 {% endblock %}
 
-{% block title %} {{page.title}} | TigerTeamX {% endblock %}
+{% block title %} {{page.title}} | {{blog.title}} {% endblock %}
 
 {% block seoTags %}
 <!-- META TAGS -->
@@ -28,17 +28,23 @@
 <!-- CANONICAL URL -->
 <link rel="canonical" href="{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}" />
 
+<style>
+	.blogs-content-wrapper aside .aside-inner {
+		background-image: url('{{blog.config.host}}/{{blog.sidebar_bg}}');
+	}
+</style>
+
 <!-- JSON LD -->
 <script type="application/ld+json">
 	{ 
 		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		"name": {% if page.title %}"{{ page.title }}"{% else %}"TigerTeamX Blogs"{% endif %},
-		"image": "{{blog.config.host}}static/images/favicon.ico",
+		"@type": "{{blog.type}}",
+		"name": {% if page.title %}"{{ page.title }}"{% else %}"{{blog.title}} Blogs"{% endif %},
+		"image": "{{blog.config.host}}{{blog.favicon}}",
 		"keywords": {% if page.tags %}"{% for tag in page.tags %}{{ tag.title }} {% endfor %}"{% else %}""{% endif %},
 		"url": "{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}",
-		"author": "{% if page.author %}{{page.author}}{% else %}TigerTeamX{% endif %}",
-		"description": {% if page.description %}"{{page.description}}"{% else %}"Tiger Team X Blogs"{% endif %}
+		"author": "{% if page.author %}{{page.author}}{% else %}{{blog.title}}{% endif %}",
+		"description": {% if page.description %}"{{page.description}}"{% else %}"{{blog.title}} Blogs"{% endif %}
 	}
 </script>
 {% endblock %}
@@ -77,7 +83,7 @@
 </div>
 <hr style="background-color: #000;margin: 1rem 0;">
 <div class="share-section">
-	<p>{% if page.author %}{{ page.author }}{% else %}TigerTeamX{% endif %}</p>
+	<p>{% if page.author %}{{ page.author }}{% else %}{{blog.title}}{% endif %}</p>
 	<button class="white-sm-button share-btn">Share</button>
 </div>
 {% endblock body %}
