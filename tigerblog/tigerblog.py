@@ -147,10 +147,8 @@ class Blog:
         elif Path(f"{LIB_DIR}/{self.config['theme']}"):
             self.config['theme'] = f"{LIB_DIR}/{self.config['theme']}"
 
-        self.static = self.config.get("static", "static")
-
-        self.title = self.config.get("title", "TigerTeamX")
-        self.description = self.config.get("description", "Tiger Blog Engine")
+        self.title = self.config.get("title", "Tiger Blog Engine")
+        self.description = self.config.get("description", "Welcome to the Awesome Tiger Blog Engine")
         self.type = self.config.get("type", "BlogPosting")
         self.keywords = self.config.get("keywords", "blogs developer frontend backend")
         self.name = self.config.get("name", "Tiger Blog Engine")
@@ -161,7 +159,7 @@ class Blog:
 
         self.tags = []
         self.env = Environment(
-            loader=FileSystemLoader([self.config.get("templates", "templates"), self.config['theme']]),
+            loader=FileSystemLoader(["templates/", self.config['theme']]),
             autoescape=select_autoescape(),
         )
 
@@ -308,7 +306,7 @@ class Blog:
                 url=f"{self.config['host']}/",
             ))
 
-    def save_custom_static_images(self, attrs: dict):
+    def save_custom_static_images_or_defaults(self, attrs: dict):
         for attr, default in attrs.items():
             file = getattr(self, attr)
 
@@ -326,26 +324,29 @@ class Blog:
             shutil.copy2(file, res_path)
             setattr(self, attr, f"static/images/{filename}")
 
+    def save_custom_static_images(self, attrs: list):
+        for attr in attrs:
+            file = getattr(self, attr)
+
+            if not Path(file).is_file():
+                print(f"{attr} file '{file}' does not exist.")
+                continue
+
+            filename = file.split("/")[-1]
+
+            shutil.copy2(file, f"{self.config['tmp']}/static/images/{filename}")
+            setattr(self, attr, f"static/images/{filename}")
+
     def prepare_static(self):
         print("Prepare static..")
 
         if Path(f'{self.config["theme"]}/static').is_dir():
             shutil.copytree(f'{self.config["theme"]}/static', f"{self.config['tmp']}/static")
 
-        if Path(self.static).is_dir():
-            merge_two_folders(self.static, f"{self.config['tmp']}/static")
+        if Path("static").is_dir():
+            merge_two_folders("static", f"{self.config['tmp']}/static")
 
-        attrs_default = {
-            "logo": "static/images/nav-logo.svg",
-            "favicon": "static/images/favicon.ico",
-            "sidebar_bg": "static/images/aside-logo.svg",
-        }
-
-        self.save_custom_static_images(attrs_default)
-
-        print(f"favicon: '{self.favicon}'")
-        print(f"logo: '{self.logo}'")
-        print(f"sidebar_bg: '{self.sidebar_bg}'")
+        self.save_custom_static_images(["logo", "favicon", "sidebar_bg"])
 
 
 def main(config):

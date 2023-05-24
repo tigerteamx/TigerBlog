@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="static/css/single-blog.css">
 {% endblock %}
 
-{% block title %} {{page.title}} | {{blog.title}} {% endblock %}
+{% block title %} {{page.title}} {% endblock %}
 
 {% block seoTags %}
 <!-- META TAGS -->
@@ -38,13 +38,13 @@
 <script type="application/ld+json">
 	{ 
 		"@context": "https://schema.org",
-		"@type": "{{blog.type}}",
-		"name": {% if page.title %}"{{ page.title }}"{% else %}"{{blog.title}} Blogs"{% endif %},
+		"@type": "{{ blog.type }}",
+		"name": "{{ page.title }}",
 		"image": "{{blog.config.host}}{{blog.favicon}}",
 		"keywords": {% if page.tags %}"{% for tag in page.tags %}{{ tag.title }} {% endfor %}"{% else %}""{% endif %},
 		"url": "{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}",
 		"author": "{% if page.author %}{{page.author}}{% else %}{{blog.title}}{% endif %}",
-		"description": {% if page.description %}"{{page.description}}"{% else %}"{{blog.title}} Blogs"{% endif %}
+		"description": {% if page.description %}"{{page.description}}"{% else %}"{{blog.title}}"{% endif %}
 	}
 </script>
 {% endblock %}
