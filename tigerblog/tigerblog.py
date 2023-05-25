@@ -243,7 +243,7 @@ class Blog:
             blog=self,
             pages=[p for p in pages],
             url=url,
-            blog_url=f'{self.config['host']}/',
+            blog_url=f"{self.config['host']}/",
         )
         write(
             path,
@@ -262,7 +262,7 @@ class Blog:
                     blog=self,
                     page=page,
                     url=page.url,
-                    blog_url=f'{self.config['host']}/',
+                    blog_url=f"{self.config['host']}/",
                 )),
             )
 
@@ -287,7 +287,7 @@ class Blog:
                 pages=pages,
                 tags=self.tags,
                 today=datetime.today(),
-                blog_url=f'{self.config['host']}/',
+                blog_url=f"{self.config['host']}/",
                 url=f"{self.config['host']}/"
             ))
 
