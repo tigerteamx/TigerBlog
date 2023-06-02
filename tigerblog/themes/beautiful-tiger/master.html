@@ -37,12 +37,6 @@
 	<!-- CANONICAL URL -->
 	<link rel="canonical" href="{{url}}" />
 
-	<style>
-		.blogs-content-wrapper aside .aside-inner {
-			background-image: url('{{blog.config.host}}/{{blog.sidebar_bg}}');
-		}
-	</style>
-
 	<!-- JSON LD -->
 	<script type="application/ld+json">
 		{ 
@@ -79,11 +73,7 @@
 				</header>
 				{% block body %}{% endblock %}
 			</div>
-			<aside>
-				<div class="aside-inner">
-					{% include "sidebar.html" %}
-				</div>
-			</aside>
+			{% include "sidebar.html" %}
 		</div>
 	</div>
 

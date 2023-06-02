@@ -1,15 +1,19 @@
-<div class="sidebar-md">
-	<h2 id=we-are-tiger-team-x>Welcome to the Awesome Tiger Blog Engine</h2>
-	<p>We build software that makes life simpler and is pleasant to use, and we build it FAST </p>
-	<h3 id=mvp-crew>MVP Crew</h3>
-	<p>We build MVPs in exchange for equity. Our expansive portfolio of great tools makes us the best team to choose for your next big idea. <a href=https://tigerteamx.com/blog/mvp-crew/ >Learn more</a></p>
-	<h3>Post your business</h3>
-    <p>Post your startup or business <a href=https://openmoo.com/submit>here</a> to gain exposure and backlinks. It is free!</p>
+<aside>
+<div class="aside-inner" style="background-image: url('{{blog.config.host}}/{{blog.sidebar_bg}}');">
+	<div class="sidebar-md">
+		<h2 id=we-are-tiger-team-x>Welcome to the Awesome Tiger Blog Engine</h2>
+		<p>We build software that makes life simpler and is pleasant to use, and we build it FAST </p>
+		<h3 id=mvp-crew>MVP Crew</h3>
+		<p>We build MVPs in exchange for equity. Our expansive portfolio of great tools makes us the best team to choose for your next big idea. <a href=https://tigerteamx.com/blog/mvp-crew/ >Learn more</a></p>
+		<h3>Post your business</h3>
+	    <p>Post your startup or business <a href=https://openmoo.com/submit>here</a> to gain exposure and backlinks. It is free!</p>
+	</div>
+
+	<h2 style="margin-bottom: .6rem;">Tags</h2>
+	<div class="tags">
+		{% for tag in blog.tags %}
+			<a href="{{tag.url}}">{{tag.title}}</a>
+		{% endfor %}
+	</div>
 </div>
-</div>
-<h2 style="margin-bottom: .6rem;">Tags</h2>
-<div class="tags">
-        {% for tag in blog.tags %}
-                <a href="{{tag.url}}">{{tag.title}}</a>
-        {% endfor %}
-</div>
+</aside>
