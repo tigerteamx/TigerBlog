@@ -1,0 +1,37 @@
+<!-- META TAGS -->
+<meta name="title" content="{{page.title}}">
+<meta name="keywords" content="{% for tag in page.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}"/>
+<meta name="description" content="{{page.description}}">	
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{page.url}}">
+<meta property="og:title" content="{{page.title}}">
+<meta property="og:description" content="{{page.description}}">
+<meta property="og:image" content="{% if page.image %}{{ page.image }}{% else %}{{blog.config.host}}/{{blog.config.logo}}{% endif %}">
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="{{page.url}}">
+<meta property="twitter:title" content="{{page.title}}">
+<meta property="twitter:description" content="{{page.description}}">
+<meta property="twitter:image" content="{% if page.image %}{{ page.image }}{% else %}{{blog.config.host}}/{{blog.config.logo}}{% endif %}">
+
+<!-- Search Engine Verification Tags -->
+{% if blog.config.googleVerificationCode %}<meta name="google-site-verification" content="{{ blog.config.googleVerificationCode }}" />{% endif %}
+{% if blog.config.bingVerificationCode %}<meta name="bing-site-verification" content="{{ blog.config.bingVerificationCode }}" />{% endif %}
+
+<!-- CANONICAL URL -->
+<link rel="canonical" href="{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}" />
+
+<!-- JSON LD -->
+<script type="application/ld+json">
+{ 
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	"name": "{% if page.title %}{{ page.title }}{% else %}TigerTeamX Blog{% endif %}",
+	"image": "{% if page.image %}{{ page.image }}{% endif %}",
+	"keywords": "{% if page.tags %}{% for tag in page.tags %}{{ tag.title }} {% endfor %}{% endif %}",
+	"url": "{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}",
+	"author": "{% if page.author %}{{page.author}}{% else %}{{blog.config.blogOwnerName}}{% endif %}",
+	"description": "{% if page.description %}{{page.description}}{% else %}{{ blog.config.blogDescription }}{% endif %}"
+}
+</script>
