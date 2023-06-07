@@ -4,5 +4,11 @@
 	"templates": "templates",
 	"output": "dist",
 	"theme": "themes/beautiful-tiger",
-	"host": "http://localhost:8000"
+	"host": "http://localhost:8000",
+	"title": "Tiger Blog Engine",
+	"description": "Welcome to the Awesome Tiger Blog Engine",
+	"keywords": "blogs developer frontend backend",
+	"name": "Tiger Blog Engine",
+	"type": "BlogPosting",
+	"blogOwnerName": "TigerBlog"
 }

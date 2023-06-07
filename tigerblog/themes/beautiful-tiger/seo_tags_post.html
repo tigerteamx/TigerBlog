@@ -32,6 +32,6 @@
 	"keywords": "{% if page.tags %}{% for tag in page.tags %}{{ tag.title }} {% endfor %}{% endif %}",
 	"url": "{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}",
 	"author": "{% if page.author %}{{page.author}}{% else %}{{blog.config.blogOwnerName}}{% endif %}",
-	"description": "{% if page.description %}{{page.description}}{% else %}{{ blog.config.blogDescription }}{% endif %}"
+	"description": "{% if page.description %}{{page.description}}{% else %}{{ blog.description }}{% endif %}"
 }
 </script>
