@@ -9,11 +9,13 @@
 		</ul>
 	</div>
 
-	<h2 style="margin-bottom: .6rem;">Tags</h2>
+	{% if blog.tags %}
+	<h3 style="margin-bottom: .6rem;">Tags</h3>
 	<div class="tags">
 		{% for tag in blog.tags %}
-			<a href="{{tag.url}}">{{tag.title}}</a>
+		<a href="{{tag.url}}">{{tag.title}}</a>	
 		{% endfor %}
 	</div>
+	{% endif %}
 </div>
 </aside>
