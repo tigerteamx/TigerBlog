@@ -22,13 +22,18 @@
 </head>
 <body>
 	<div style="flex: 1;">
-		<nav>
+		<nav class="main-nav">
 			<div class="nav-inner">
-				<a href="" class="logo">
+				<a href="{{blog_url}}" class="logo">
 					<img src="{{blog.config.host}}/{{blog.logo}}" alt="">
 				</a>
 				<div class="nav-links">
-				{% include "navlinks.html" %}
+					{% include "navlinks.html" %}
+				</div>
+				<div class="hamburger-menu">
+					<div class="line line1"></div>
+					<div class="line line2"></div>
+					<div class="line line3"></div>
 				</div>
 			</div>
 		</nav>
@@ -54,15 +59,14 @@
 		</div>
 	</footer>
 
+	<script>
+		const nav = document.querySelector('.main-nav')
+		nav.addEventListener('click', () => nav.classList.toggle('show-nav'))
+	</script>
+	
 	{% block customjs %}{% endblock %}
 
-	{% if blog.config.toolelFeedbackId != "" %}
-	<script defer data-show-after="{{blog.config.toolelFeedbackShowAfter}}" data-show-thank-you="{{blog.config.toolelFeedbackShowThanks}}" data-id="{{blog.config.toolelFeedbackId}}" src="https://toolel.com/js/toolel_feedback.js"></script>
-	{% endif %}
-
-	{% if blog.config.plausibleDomain != "" %}
-	<script defer data-domain="{{ blog.config.plausibleDomain }}" src="https://plausible.io/js/script.js"></script>
-	{% endif %}
+	{% include "javascript.html" %}
 
 </body>
 </html>

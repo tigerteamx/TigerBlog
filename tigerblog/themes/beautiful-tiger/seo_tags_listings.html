@@ -1,6 +1,6 @@
 <!-- META TAGS -->
 <meta name="title" content="{{ blog.title }}">
-<meta name="keywords" content="{% for tag in blog.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}"/>
+<meta name="keywords" content="{% if blog.tags %}{% for tag in blog.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}{% else %}{{ blog.keywords }}{% endif %}"/>
 <meta name="description" content="{{ blog.description }}">
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
@@ -29,7 +29,7 @@
 	"@type": "Blog",
 	"name": "{{ blog.name }}",
 	"image": "{{blog.config.host}}/{{blog.logo}}",
-	"keywords": "{{ blog.keywords }}",
+	"keywords": "{% if blog.tags %}{% for tag in blog.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}{% else %}{{ blog.keywords }}{% endif %}",
 	"url": "{{ url }}",
 	"description": "{{ blog.description }}"
 }

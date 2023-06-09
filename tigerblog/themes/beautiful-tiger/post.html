@@ -109,7 +109,7 @@
 	// ADDING LINK ICON TO HEADERS IN POST
 	const headings = document.querySelectorAll('.blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6')
 	headings.forEach(header => {
-		const link = document.createElement('a')
+		const link = document.createElement('span')
 		link.innerText = '🔗'
 		link.classList.add('header-link')
 		header.appendChild(link)
