@@ -183,7 +183,7 @@ class Blog:
                     url=f"{self.config['host']}/tags/{slugify(tag)}/"),
                 )
 
-            path = fn[len(self.config['content_path']):]
+            path = fn[len(self.config['content_path']):]  # /about-us.md
 
             if path.endswith("index.md"):
                 # if path is of format /my-blog-post/index.md
@@ -201,8 +201,9 @@ class Blog:
             if image != '':
                 # TODO: also make this image with my-blog-post.md
                 post_path = fn[len(self.config['content_path']):].\
-                    replace('index.md', '')
-                image = f"{self.config['host']}/{post_path}/{image}"
+                    replace('index.md', '')  # /posts/cool-blog-post/
+
+                image = f"{self.config['host']}{post_path}{image}"
 
             self.pages.append(Page(
                 title=page_data['title'],
@@ -386,8 +387,10 @@ def build(config):
         # but you can make your own custom way
         if config:
             c = json.loads(read(config))
+        elif Path("config.json").exists():
+            c = json.loads(read("config.json"))
         else:
-            c = json.loads(read(f"{LIB_DIR}/config.json"))
+            c = json.loads(read(f"{LIB_DIR}/default_config.json"))
 
         main(c)
 
@@ -403,6 +406,8 @@ def print_it(config):
         # but you can make your own custom way
         if config:
             c = json.loads(read(config))
+        elif Path("tigerblog/config.json").exists():
+            c = json.loads(read("tigerblog/config.json"))
         else:
             c = json.loads(read("config.json"))
 
