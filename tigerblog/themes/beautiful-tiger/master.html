@@ -61,7 +61,8 @@
 
 	<script>
 		const nav = document.querySelector('.main-nav')
-		nav.addEventListener('click', () => nav.classList.toggle('show-nav'))
+		const hamburger = document.querySelector('.hamburger-menu')
+		hamburger.addEventListener('click', () => nav.classList.toggle('show-nav'))
 	</script>
 	
 	{% block customjs %}{% endblock %}
