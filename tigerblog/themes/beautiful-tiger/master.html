@@ -63,6 +63,22 @@
 		const nav = document.querySelector('.main-nav')
 		const hamburger = document.querySelector('.hamburger-menu')
 		hamburger.addEventListener('click', () => nav.classList.toggle('show-nav'))
+
+		const asideInner = document.querySelector('aside .aside-inner')
+		if (asideInner !== null) {
+			function checkSidebarHeight() {
+				const windowHeight = window.innerHeight;
+				const sidebarHeight = asideInner.offsetHeight;
+
+				if (sidebarHeight > windowHeight) {
+					asideInner.style.position = 'relative';
+				} else {
+					asideInner.style.position = 'sticky';
+				}
+			}
+			checkSidebarHeight()
+			window.addEventListener('resize', checkSidebarHeight)
+		}
 	</script>
 	
 	{% block customjs %}{% endblock %}
