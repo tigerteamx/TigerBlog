@@ -67,14 +67,17 @@
 
 		const asideInner = document.querySelector('aside .aside-inner')
 		if (asideInner !== null) {
+			const aside = document.querySelector('aside')
 			function checkSidebarHeight() {
 				const windowHeight = window.innerHeight;
 				const sidebarHeight = asideInner.offsetHeight;
 
 				if (sidebarHeight > windowHeight) {
 					asideInner.style.position = 'relative';
+					aside.style.marginTop = '185px'
 				} else {
 					asideInner.style.position = 'sticky';
+					aside.style.marginTop = '202px'
 				}
 			}
 			checkSidebarHeight()
