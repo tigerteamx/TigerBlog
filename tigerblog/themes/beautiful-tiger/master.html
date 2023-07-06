@@ -26,7 +26,7 @@
 		<nav class="main-nav">
 			<div class="nav-inner">
 				<a href="{{blog_url}}" class="logo">
-					<img loading="lazy" src="{{blog.config.host}}/{{blog.logo}}" alt="">
+					<img class="lazy" data-src="{{blog.config.host}}/{{blog.logo}}" alt="">
 				</a>
 				<div class="nav-links">
 					{% include "navlinks.html" %}
@@ -60,6 +60,7 @@
 		</div>
 	</footer>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/17.8.3/lazyload.min.js" integrity="sha512-PYqZh14FSExDb67jbM60M4ri5A/Bn/xOiM1ihfPx7c1d8XywMmn2M7+Z4i+v9RF9dlzRYzqk7sXamAHKZjfyFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		const nav = document.querySelector('.main-nav')
 		const hamburger = document.querySelector('.hamburger-menu')
@@ -83,6 +84,9 @@
 			checkSidebarHeight()
 			window.addEventListener('resize', checkSidebarHeight)
 		}
+
+		var lazyLoadInstance = new LazyLoad();
+		
 	</script>
 	
 	{% block customjs %}{% endblock %}
