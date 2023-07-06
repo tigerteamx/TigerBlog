@@ -3,9 +3,9 @@
 	<div class="blog-card">
 		<a href="{{item.url}}" class="card-img">
 			{% if item.image %}
-			<img src="{{item.image}}" alt="{{item.title}}">
+			<img loading="lazy" src="{{item.image}}" alt="{{item.title}}">
 			{% else %}
-			<img src="https://unsplash.it/1600/900" alt="">
+			<img loading="lazy" src="https://unsplash.it/1600/900" alt="">
 			{% endif %}
 		</a>
 		<h3 style="background-color: {{bcg}}">
