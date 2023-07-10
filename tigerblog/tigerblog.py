@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from traceback import format_exc
 from typing_extensions import Self
 from htmlmin import minify as html_minify
+from PIL import Image
 
 from frontmatter import load
 from markdown import markdown as _markdown
@@ -203,6 +204,8 @@ class Blog:
                 post_path = fn[len(self.config['content_path']):].\
                     replace('index.md', '')  # /posts/cool-blog-post/
 
+                self.process_image(post_path, image)
+
                 image = f"{self.config['host']}{post_path}{image}"
 
             self.pages.append(Page(
@@ -219,6 +222,33 @@ class Blog:
                 url=f"{self.config['host']}{path}/",
                 related=[],
             ))
+
+    def compress_image(self, path):
+        max_img_size = 500  # KB
+        min_width = 400
+        min_height = 250
+        attempts = 5
+        img_size = os.path.getsize(path)
+
+        if img_size <= max_img_size / 1024:
+            return
+
+        while attempts > 0:
+            with Image.open(path) as img:
+                if img_size <= max_img_size or all([img.width * 0.75 < min_width, img.height * 0.75 < min_height]):
+                    break
+
+                img = img.resize((round(img.width * 0.75), round(img.height * 0.75)))
+                img.save(path, optimize=True, quality=80)
+
+            img_size = os.path.getsize(path)
+            attempts -= 1
+
+    def process_image(self, path, image):
+        img_dir_path = f"{self.config['content_path']}{path}"
+        shutil.copy2(f"{img_dir_path}/{image}", f"{img_dir_path}/original-{image}")
+
+        self.compress_image(f"{img_dir_path}/{image}")
 
     def prepare(self):
         print("Sorting pages..")
