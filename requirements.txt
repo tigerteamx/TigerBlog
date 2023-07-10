@@ -5,3 +5,4 @@ docopt==0.6.2
 typing-extensions
 Markdown==3.4.1
 htmlmin==0.1.12
+Pillow==9.0.1
