@@ -32,20 +32,22 @@ body {
         padding-right: 0;
     }   
 }
-.btn {
-    display: inline-block;
-    background: var(--primary-text-color);
-    color: var(--primary-clr-1);
-    padding: 0.8rem 1rem;
-    border-radius: 0.3rem;
-    text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: .12rem;
-    font-weight: 600;
+button, .btn, input[type="submit"] {
+    background: var(--orange-color);
+    color: #fff;
     border: none;
+    padding: 0.8rem 1rem !important;
+    border-radius: 0.3rem;
+    font-size: .9rem;
     cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: .05rem;
 }
-.btn.btn-orange { background-color: var(--orange-color); }
+.btn.btn-black { background-color: var(--primary-text-color); }
+button:hover, .btn:hover,input[type="submit"] {
+    opacity: .8;
+}
 
 nav {
     background-color: var(--primary-clr-1);
@@ -358,3 +360,90 @@ form label {
     }
 }
 /* HAMBURGER MENU */
+
+/* FORM STYLES */
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+form,
+form * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto'
+}
+
+form {
+    box-shadow: 3px 3px 1rem rgba(0,0,0, .08);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+@media (max-width: 800px) {
+    form { padding: 15px; }
+}
+
+input,
+select,
+textarea {
+    padding: 10px 15px;
+    width: 100%;
+    outline: 0
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #616161
+}
+
+input,
+textarea,
+select {
+    border: 1px solid #e0e0e0;
+    color: #616161;
+    transition: background-color .3s, border-color .3s
+}
+input:focus,
+textarea:focus {
+    outline: 2px solid var(--border-clr);
+}
+
+input {
+    height: 40px
+}
+
+input[type=date]::-webkit-calendar-picker-indicator {
+    filter: invert(1)
+}
+
+select {
+    background-color: transparent;
+}
+
+textarea {
+    width: 100% !important;
+    height: 70px !important;
+    resize: none
+}
+
+input[type=checkbox] {
+    width: auto;
+    margin: 0 5px 7px 0;
+    height: auto
+}
+
+select option {
+    color: #616161;
+}
+
+.form-group {
+    margin: 10px 0;
+    width: 100%
+}
+.form-group:has(input[type=checkbox]) {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px
+}
+/* FORM STYLES */
