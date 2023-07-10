@@ -12,8 +12,8 @@ from dataclasses import dataclass
 from traceback import format_exc
 from typing_extensions import Self
 from htmlmin import minify as html_minify
-from PIL import Image
 
+from PIL import Image
 from frontmatter import load
 from markdown import markdown as _markdown
 from slugify import slugify
@@ -228,25 +228,29 @@ class Blog:
         min_width = 400
         min_height = 250
         attempts = 5
-        img_size = os.path.getsize(path)
+        img_size = os.path.getsize(path) / 1024
 
-        if img_size <= max_img_size / 1024:
+        if img_size <= max_img_size:
             return
 
-        while attempts > 0:
-            with Image.open(path) as img:
-                if img_size <= max_img_size or all([img.width * 0.75 < min_width, img.height * 0.75 < min_height]):
-                    break
+        try:
+            while attempts > 0:
+                with Image.open(path) as img:
+                    if img_size <= max_img_size or all([img.width * 0.75 < min_width, img.height * 0.75 < min_height]):
+                        break
 
-                img = img.resize((round(img.width * 0.75), round(img.height * 0.75)))
-                img.save(path, optimize=True, quality=80)
+                    img = img.resize((round(img.width * 0.75), round(img.height * 0.75)))
+                    img.save(path, optimize=True, quality=80)
 
-            img_size = os.path.getsize(path)
-            attempts -= 1
+                img_size = os.path.getsize(path) / 1024
+                attempts -= 1
+        except: # noqa
+            print(f"Exception while image '{path}' compression:\n{format_exc()}")
 
     def process_image(self, path, image):
         img_dir_path = f"{self.config['content_path']}{path}"
-        shutil.copy2(f"{img_dir_path}/{image}", f"{img_dir_path}/original-{image}")
+        if not os.path.exists(f"{img_dir_path}/original-{image}"):
+            shutil.copy2(f"{img_dir_path}/{image}", f"{img_dir_path}/original-{image}")
 
         self.compress_image(f"{img_dir_path}/{image}")
 
