@@ -204,8 +204,6 @@ class Blog:
                 post_path = fn[len(self.config['content_path']):].\
                     replace('index.md', '')  # /posts/cool-blog-post/
 
-                self.process_image(post_path, image)
-
                 image = f"{self.config['host']}{post_path}{image}"
 
             self.pages.append(Page(
@@ -247,10 +245,13 @@ class Blog:
         except: # noqa
             print(f"Exception while image '{path}' compression:\n{format_exc()}")
 
-    def process_image(self, path, image):
-        img_dir_path = f"{self.config['content_path']}{path}"
+    def process_images(self):
+        for file in self.files:
+            file_ext = file.split(".")[-1]
+            if file_ext not in ["jpg", "jpeg", "png"]:
+                continue
 
-        self.compress_image(f"{img_dir_path}/{image}")
+            self.compress_image(file)
 
     def prepare(self):
         print("Sorting pages..")
@@ -407,6 +408,8 @@ def main(config):
             tag.url,
         )
 
+    blog.process_images()
+
     blog.copy_files()
 
     shutil.rmtree(blog.config['output'], ignore_errors=True, onerror=None)
@@ -465,7 +468,6 @@ def print_it(config):
     except: # noqa
         print("Error happened when compiling")
         print(format_exc())
-
 
 
 doc = """tigerblog
