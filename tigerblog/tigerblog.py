@@ -249,8 +249,6 @@ class Blog:
 
     def process_image(self, path, image):
         img_dir_path = f"{self.config['content_path']}{path}"
-        if not os.path.exists(f"{img_dir_path}/original-{image}"):
-            shutil.copy2(f"{img_dir_path}/{image}", f"{img_dir_path}/original-{image}")
 
         self.compress_image(f"{img_dir_path}/{image}")
 
