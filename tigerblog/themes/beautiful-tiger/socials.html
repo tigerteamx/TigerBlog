@@ -1,0 +1,27 @@
+<div class="footer-socials">
+    {% if blog.config.twitter and blog.config.twitter != "" %}
+        <a href="{{ blog.config.twitter }}" class="social-item" target="_blank">
+            <img src="static/images/twitter.png">
+        </a>
+    {% endif %}
+    {% if blog.config.linkedin and blog.config.linkedin != "" %}
+        <a href="{{ blog.config.linkedin }}" class="social-item" target="_blank">
+            <img src="static/images/linkedin.png">
+        </a>
+    {% endif %}
+    {% if blog.config.youtube and blog.config.youtube != "" %}
+        <a href="{{ blog.config.youtube }}" class="social-item" target="_blank">
+            <img src="static/images/youtube.png">
+        </a>
+    {% endif %}
+    {% if blog.config.reddit and blog.config.reddit != "" %}
+        <a href="{{ blog.config.reddit }}" class="social-item" target="_blank">
+            <img src="static/images/reddit.png">
+        </a>
+    {% endif %}
+    {% if blog.config.medium and blog.config.medium != "" %}
+        <a href="{{ blog.config.medium }}" class="social-item" target="_blank">
+            <img src="static/images/medium.png">
+        </a>
+    {% endif %}
+</div>

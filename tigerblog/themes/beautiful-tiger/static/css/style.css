@@ -74,11 +74,11 @@ nav .logo img {
     text-decoration: none;
     font-weight: 500;
 }
-.navlink-social-item {
+.social-item {
     display: inline-flex;
     margin-right: .5rem !important;
 }
-.navlink-social-item img {
+.social-item img {
     width: 25px;
 }
 .nav-links a:not(:last-of-type) {

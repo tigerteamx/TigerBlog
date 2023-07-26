@@ -30,31 +30,6 @@
 				</a>
 				<div class="nav-links">
 					{% include "navlinks.html" %}
-					{% if blog.config.twitter != "" %}
-					<a href="{{ blog.config.twitter }}" class="navlink-social-item" target="_blank">
-						<img src="static/images/twitter.png">
-					</a>
-					{% endif %}
-					{% if blog.config.linkedin != "" %}
-					<a href="{{ blog.config.linkedin }}" class="navlink-social-item" target="_blank">
-						<img src="static/images/linkedin.png">
-					</a>
-					{% endif %}
-					{% if blog.config.youtube != "" %}
-					<a href="{{ blog.config.youtube }}" class="navlink-social-item" target="_blank">
-						<img src="static/images/youtube.png">
-					</a>
-					{% endif %}
-					{% if blog.config.reddit != "" %}
-					<a href="{{ blog.config.reddit }}" class="navlink-social-item" target="_blank">
-						<img src="static/images/reddit.png">
-					</a>
-					{% endif %}
-					{% if blog.config.medium != "" %}
-					<a href="{{ blog.config.medium }}" class="navlink-social-item" target="_blank">
-						<img src="static/images/medium.png">
-					</a>
-					{% endif %}
 				</div>
 				<div class="hamburger-menu">
 					<div class="line line1"></div>
@@ -80,6 +55,7 @@
 
 	<footer>
 		<div class="footer-inner">
+			{% include "socials.html" %}
 			<!-- Consider not to remove this as this is free and open source -->
 			<p>Powered By TigerBlogEngine Copyright @ 2023 <a href="https://TigerTeamX.com">TigerTeamX.com</a></p>
 		</div>
