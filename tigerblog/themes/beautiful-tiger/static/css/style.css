@@ -65,10 +65,21 @@ nav {
 nav .logo img {
     width: 70px;
 }
+.nav-links {
+    display: flex;
+    align-items: center;
+}
 .nav-links a {
     text-transform: uppercase;
     text-decoration: none;
     font-weight: 500;
+}
+.social-item {
+    display: inline-flex;
+    margin-right: .5rem !important;
+}
+.social-item img {
+    width: 25px;
 }
 .nav-links a:not(:last-of-type) {
     margin-right: 1rem;
@@ -192,13 +203,26 @@ header {
 footer {
     background-color: var(--primary-clr-1);
     border-top: 1px solid var(--border-clr);
-    padding: 2rem 0;
+    padding: 1rem 0;
     text-align: center;
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: .1rem;
 }
-footer .footer-inner { justify-content: center; }
+footer .footer-inner {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+footer .footer-inner .footer-socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+footer .footer-inner .footer-socials a { text-decoration: none; }
+footer .footer-inner .footer-socials img { width: 40px; }
 
 form {
     width: 100%;
@@ -317,14 +341,15 @@ form label {
                 200ms ease-in-out opacity;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 850px) {
     .hamburger-menu { display: flex; }
-    .nav-links a:not(:last-of-type) {
+    .nav-links a {
         margin-right: 0;
         padding: 0.5rem 1rem;
         display: block;
         width: 100%;
     }
+    .nav-links a.btn { width: auto; }
     .nav-links a:not(.btn):hover {
         background-color: rgba(0, 0, 0, .08);
     }
@@ -340,7 +365,6 @@ form label {
         border-left: 1px solid var(--border-clr);
         border-right: 1px solid var(--border-clr);
         border-bottom: 1px solid var(--border-clr);
-        display: flex;
         flex-direction: column;
         align-items: flex-start;
         transition: 200ms ease-in-out transform;
