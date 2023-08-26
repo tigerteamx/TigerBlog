@@ -13,13 +13,10 @@
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/custom-css.css">
 	<link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
-	{% block customcss %}{% endblock %}
 	
 	<title>{{blog.title}}</title>
 
-	{% block seoTags %}
 	{% include 'seo_tags_listings.html' %}
-	{% endblock %}
 	<plugins></plugins>
 </head>
 <body>
@@ -53,8 +50,6 @@
 			{% include "sidebar.html" %}
 		</div>
 	</div>
-
-	{% block bottomMoreContent %}{% endblock %}
 
 	<footer>
 		<div class="footer-inner">
@@ -91,9 +86,7 @@
 
 		var lazyLoadInstance = new LazyLoad();
 		
-	</script>
-	
-	{% block customjs %}{% endblock %}
+	</script>	
 
 	{% include "javascript.html" %}
 
