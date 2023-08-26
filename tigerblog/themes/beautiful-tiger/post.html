@@ -1,40 +1,61 @@
-{% extends "master.html" %}
+<!DOCTYPE html>
+<html lang="en">
 {% from './macros.html' import blog_card %}
+<head>
+	<base href="{{blog.config.host}}/">
 
-{% block customcss %}
-<link rel="stylesheet" href="static/css/single-blog.css">
-{% endblock %}
+	<!-- META -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block title %} {{page.title}} {% endblock %}
+	<!-- LINKS -->
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="static/css/custom-css.css">
+	<link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
+	<link rel="stylesheet" href="static/css/single-blog.css">
+	
+	<title>{{page.title}}</title>
 
-{% block seoTags %}
-{% include 'seo_tags_post.html' %}
-{% endblock %}
+	{% include 'seo_tags_post.html' %}
+	<plugins></plugins>
+</head>
+<body>
+	<div style="flex: 1;">
+		<nav class="main-nav">
+			<div class="nav-inner">
+				<a href="{{blog_url}}" class="logo">
+					<img class="lazy" data-src="{{blog.config.host}}/{{blog.logo}}" alt="">
+				</a>
+				<div class="nav-links">
+					{% include "navlinks.html" %}
+				</div>
+				<div class="hamburger-menu">
+					<div class="line line1"></div>
+					<div class="line line2"></div>
+					<div class="line line3"></div>
+				</div>
+			</div>
+		</nav>
+		<div class="blogs-content-wrapper">
+			<div class="page-content">
+				<header>
+					<div class="header-inner">
+						<h1>{{ page.title }}</h1>
 
-{% block header %}
-<h1>{{ page.title }}</h1>
+						{% if page.date and page.author %}
+							<p style="margin-bottom: 1rem;">{{page.date.strftime("%B %d, %Y")}} • {{page.author}} • <span class="reading-time"></span></p>
+						{% elif page.date %}
+							<p style="margin-bottom: 1rem;">{{page.date.strftime("%B %d, %Y")}} • <span class="reading-time"></span></p>
+						{% elif page.author %}
+							<p style="margin-bottom: 1rem;">{{page.author}} • <span class="reading-time"></span></p>
+						{% endif %}
 
-{% if page.date and page.author %}
-	<p style="margin-bottom: 1rem;">{{page.date.strftime("%B %d, %Y")}} • {{page.author}} • <span class="reading-time"></span></p>
-{% elif page.date %}
-	<p style="margin-bottom: 1rem;">{{page.date.strftime("%B %d, %Y")}} • <span class="reading-time"></span></p>
-{% elif page.author %}
-	<p style="margin-bottom: 1rem;">{{page.author}} • <span class="reading-time"></span></p>
-{% endif %}
-
-{% if page.image %}
-	<img class="lazy" data-src="{{page.image}}" alt="{{page.image}}">
-{% endif %}
-{% endblock %}
-
-{% block aside %}
-	<b>Tags:</b> <br>
-	{% for tag in page.tags %}
-		<a href="{{tag.url}}">{{tag.title}}</a>	
-	{% endfor %}
-{% endblock %}
-
-{% block body %}
+						{% if page.image %}
+							<img class="lazy" data-src="{{page.image}}" alt="{{page.image}}">
+						{% endif %}
+					</div>
+				</header>
 <div class="blog-content">
 	{{ page.body_html|safe }}
 	<div class="tags">
@@ -48,9 +69,11 @@
 	<p>{% if page.author %}{{ page.author }}{% else %}{{blog.title}}{% endif %}</p>
 	<button class="white-sm-button share-btn">Share</button>
 </div>
-{% endblock body %}
+			</div>
+			{% include "sidebar.html" %}
+		</div>
+	</div>
 
-{% block bottomMoreContent %}
 	{% if page.related %}
 		<div class="related-section">
 			<div class="related-section-inner">
@@ -62,90 +85,138 @@
 			</div>
 		</div>
 	{% endif %}
-{% endblock %}
 
-{% block customjs %}
-<script>
-	// PRE TAGS DESIGN
-	const preElements = document.querySelectorAll('.blog-content pre')
-	if (preElements.length > 0) {
-		preElements.forEach(preEl => {
-			const codeBar = document.createElement('div')
-			codeBar.classList.add('codeEl-bar')
-			codeBar.innerHTML = `<button class="white-sm-button">Copy</button>`
-			preEl.prepend(codeBar)
+	<footer>
+		<div class="footer-inner">
+			{% include "socials.html" %}
+			<!-- Consider not to remove this as this is free and open source -->
+			<p>Powered By TigerBlogEngine Copyright @ 2023 <a href="https://TigerTeamX.com">TigerTeamX.com</a></p>
+		</div>
+	</footer>
 
-			const codeEl = preEl.querySelector('code')
-			const codeWrapperEl = document.createElement('div')
-			codeWrapperEl.classList.add('codeEl-wrapper')
-			codeWrapperEl.innerHTML = `<code>${codeEl.innerHTML}</code>`
-			codeEl.parentNode.insertBefore(codeWrapperEl, codeEl)
-			codeEl.parentNode.removeChild(codeEl)
+	<script src="static/js/lazyload.js"></script>
+	<script>
+		const nav = document.querySelector('.main-nav')
+		const hamburger = document.querySelector('.hamburger-menu')
+		hamburger.addEventListener('click', () => nav.classList.toggle('show-nav'))
 
-			codeBar.querySelector('button').addEventListener('click', async () => {
-				try {
-					codeBar.querySelector('button').innerText = 'Copied'
-					setTimeout(() => codeBar.querySelector('button').innerText = 'Copy', 2000)
-					await navigator.clipboard.writeText(codeEl.innerText);
-				} catch (err) {
-					console.error("Failed to copy text: ", err);
+		const asideInner = document.querySelector('aside .aside-inner')
+		if (asideInner !== null) {
+			const aside = document.querySelector('aside')
+			function checkSidebarHeight() {
+				const windowHeight = window.innerHeight;
+				const sidebarHeight = asideInner.offsetHeight;
+
+				if (sidebarHeight > windowHeight) {
+					asideInner.style.position = 'relative';
+					aside.style.marginTop = '185px'
+				} else {
+					asideInner.style.position = 'sticky';
+					aside.style.marginTop = '202px'
 				}
-			})
-		})
-	}
-
-	// SHARE BUTTON IN THE BOTTOM
-	const shareBtn = document.querySelector('.share-btn')
-	shareBtn.addEventListener('click', async () => {
-		try {
-			shareBtn.innerText = 'URL Copied!'
-			setTimeout(() => shareBtn.innerText = 'Share', 4000)
-			await navigator.clipboard.writeText(window.location.href);
-		} catch (err) {
-			console.error("Failed to copy text: ", err);
+			}
+			checkSidebarHeight()
+			window.addEventListener('resize', checkSidebarHeight)
 		}
-	})
 
-	// ADDING LINK ICON TO HEADERS IN POST
-	const headings = document.querySelectorAll('.blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6')
-	headings.forEach(header => {
-		const link = document.createElement('span')
-		link.innerText = '🔗'
-		link.classList.add('header-link')
-		header.appendChild(link)
+		var lazyLoadInstance = new LazyLoad();
+		
+	</script>
+	
+	{% block customjs %}{% endblock %}
 
-		link.addEventListener('click', e => {
-			e.preventDefault()
-			header.scrollIntoView({behavior: "smooth"})
-			history.pushState(null, null, `{{page.url}}#${header.getAttribute('id')}`)
+	<script>
+		// PRE TAGS DESIGN
+		const preElements = document.querySelectorAll('.blog-content pre')
+		if (preElements.length > 0) {
+			preElements.forEach(preEl => {
+				const codeBar = document.createElement('div')
+				codeBar.classList.add('codeEl-bar')
+				codeBar.innerHTML = `<button class="white-sm-button">Copy</button>`
+				preEl.prepend(codeBar)
+
+				const codeEl = preEl.querySelector('code')
+				const codeWrapperEl = document.createElement('div')
+				codeWrapperEl.classList.add('codeEl-wrapper')
+				codeWrapperEl.innerHTML = `<code>${codeEl.innerHTML}</code>`
+				codeEl.parentNode.insertBefore(codeWrapperEl, codeEl)
+				codeEl.parentNode.removeChild(codeEl)
+
+				codeBar.querySelector('button').addEventListener('click', async () => {
+					try {
+						codeBar.querySelector('button').innerText = 'Copied'
+						setTimeout(() => codeBar.querySelector('button').innerText = 'Copy', 2000)
+						await navigator.clipboard.writeText(codeEl.innerText);
+					} catch (err) {
+						console.error("Failed to copy text: ", err);
+					}
+				})
+			})
+		}
+
+		// SHARE BUTTON IN THE BOTTOM
+		const shareBtn = document.querySelector('.share-btn')
+		shareBtn.addEventListener('click', async () => {
+			try {
+				shareBtn.innerText = 'URL Copied!'
+				setTimeout(() => shareBtn.innerText = 'Share', 4000)
+				await navigator.clipboard.writeText(window.location.href);
+			} catch (err) {
+				console.error("Failed to copy text: ", err);
+			}
 		})
-	})
 
-	// TOC DESIGN
-	const toc = document.querySelector('.toc')
-	if(toc) {
-		const h3 = document.createElement('h3')
-		h3.innerText = 'Table of Contents'
-		h3.style.marginLeft = '2rem'
-		toc.prepend(h3)
+		// ADDING LINK ICON TO HEADERS IN POST
+		const headings = document.querySelectorAll('.blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6')
+		headings.forEach(header => {
+			const link = document.createElement('span')
+			link.innerText = '🔗'
+			link.classList.add('header-link')
+			header.appendChild(link)
 
-		const toc_links = toc.querySelectorAll('.toc a')
-		toc_links.forEach(link => {
 			link.addEventListener('click', e => {
 				e.preventDefault()
-				const newHeadings = [...headings]
-				const header = newHeadings.filter(header => header.getAttribute('id') == link.getAttribute('href').split('#')[1])
-				header[0].scrollIntoView({behavior: "smooth"})
-				history.pushState(null, null, `{{page.url}}${link.getAttribute('href')}`)
+				header.scrollIntoView({behavior: "smooth"})
+				history.pushState(null, null, `{{page.url}}#${header.getAttribute('id')}`)
 			})
 		})
-	}
 
-	// READ TIME POST
-	const blog_content = `{{page.body}}`
-	const wordsPerMinute = 200
-	const words = blog_content.trim().split(/\s+/).length
-	const readingTime = Math.ceil(words / wordsPerMinute)
-	document.querySelector('.reading-time').innerText = `${readingTime} Minute Read`
-</script>
+		// TOC DESIGN
+		const toc = document.querySelector('.toc')
+		if(toc) {
+			const h3 = document.createElement('h3')
+			h3.innerText = 'Table of Contents'
+			h3.style.marginLeft = '2rem'
+			toc.prepend(h3)
+
+			const toc_links = toc.querySelectorAll('.toc a')
+			toc_links.forEach(link => {
+				link.addEventListener('click', e => {
+					e.preventDefault()
+					const newHeadings = [...headings]
+					const header = newHeadings.filter(header => header.getAttribute('id') == link.getAttribute('href').split('#')[1])
+					header[0].scrollIntoView({behavior: "smooth"})
+					history.pushState(null, null, `{{page.url}}${link.getAttribute('href')}`)
+				})
+			})
+		}
+
+		// READ TIME POST
+		const blog_content = `{{page.body}}`
+		const wordsPerMinute = 200
+		const words = blog_content.trim().split(/\s+/).length
+		const readingTime = Math.ceil(words / wordsPerMinute)
+		document.querySelector('.reading-time').innerText = `${readingTime} Minute Read`
+	</script>
+
+</body>
+</html>
+
+
+
+{% block aside %}
+	<b>Tags:</b> <br>
+	{% for tag in page.tags %}
+		<a href="{{tag.url}}">{{tag.title}}</a>	
+	{% endfor %}
 {% endblock %}
