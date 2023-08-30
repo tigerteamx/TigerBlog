@@ -89,52 +89,6 @@ def read_page(path):
     return defaults
 
 
-SITEMAP_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">	
-	<url>
-        <loc>{{url}}</loc>
-        <lastmod>{{today.strftime("%Y-%m-%d")}}</lastmod>
-	</url>
-	{% for page in pages %}
-	<url>
-        <loc>{{page.url}}</loc>
-        <lastmod>{{page.date.strftime("%Y-%m-%d")}}</lastmod>
-	</url>
-	{% endfor %}
-	{% for tag in tags %}
-	<url>
-		<loc>{{tag.url}}</loc>
-	</url>
-	{% endfor %}
-</urlset>"""  # noqa
-
-REDIRECT_TEMPLATE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <base href="{{blog.config.host}}/">
-
-  <!-- META -->
-  <meta charset="UTF-8">
-  <meta name="robots" content="noindex">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-  <meta http-equiv="refresh" content="0; url={{url}}"/>
-    
-  <!-- LINKS -->
-  <link rel="stylesheet" href="static/css/style.css">
-  <link rel="stylesheet" href="static/css/custom-css.css">
-  <link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
-  
-  <!-- CANONICAL URL -->
-  <link rel="canonical" href="{{url}}" />
-  
-  <title> {% block title %} {{blog.name}}{% endblock %} </title>
-</head>
-</html>
-"""
-
-
 def markdown(text):
     return _markdown(
         text,
@@ -345,9 +299,6 @@ class Blog:
             self.write_page_aliases(page)
 
     def write_page_aliases(self, page):
-        if not page.aliases:
-            return
-
         for alias in page.aliases:
             alias_path = alias.strip().lower()
             if not alias_path:
@@ -356,10 +307,10 @@ class Blog:
             print(f"Writing '{alias_path}' alias..")
             mkdir(f"{self.config['tmp']}/{alias_path}")
 
-            env = Environment(loader=BaseLoader())
+            template = self.get_template("redirect.html")
             write(
                 f'{self.config["tmp"]}/{alias_path}/index.html',
-                html_minify(env.from_string(REDIRECT_TEMPLATE).render(
+                html_minify(template.render(
                     blog=self,
                     url=page.url,
                 )),
@@ -378,17 +329,18 @@ class Blog:
     def write_sitemap(self, extra_sitemaps=[]):
         print("Writing sitemap..")
         pages = list(self.pages) + extra_sitemaps
-        env = Environment(loader=BaseLoader())
-
-        with open(f"{self.config['tmp']}/sitemap.xml", "w") as f:
-            f.write(env.from_string(SITEMAP_TEMPLATE).render(
+        template = self.get_template("sitemap.xml")
+        write(
+            f"{self.config['tmp']}/sitemap.xml",
+            template.render(
                 blog=self,
                 pages=pages,
                 tags=self.tags,
                 today=datetime.today(),
                 blog_url=f"{self.config['host']}/",
                 url=f"{self.config['host']}/",
-            ))
+            ),
+        )
 
     def save_custom_static_images(self, attrs: dict):
         for attr, default in attrs.items():
