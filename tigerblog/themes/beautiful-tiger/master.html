@@ -26,7 +26,7 @@
 		<nav class="main-nav">
 			<div class="nav-inner">
 				<a href="{{blog_url}}" class="logo">
-					<img class="lazy" data-src="{{blog.config.host}}/{{blog.logo}}" alt="">
+					<img class="lozad" data-src="{{blog.config.host}}/{{blog.logo}}" alt="">
 				</a>
 				<div class="nav-links">
 					{% include "navlinks.html" %}
@@ -61,32 +61,36 @@
 		</div>
 	</footer>
 
-	<script src="static/js/lazyload.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
 	<script>
 		const nav = document.querySelector('.main-nav')
 		const hamburger = document.querySelector('.hamburger-menu')
 		hamburger.addEventListener('click', () => nav.classList.toggle('show-nav'))
+		
+		const observer = lozad();
+		observer.observe();
 
 		const asideInner = document.querySelector('aside .aside-inner')
-		if (asideInner !== null) {
-			const aside = document.querySelector('aside')
-			function checkSidebarHeight() {
-				const windowHeight = window.innerHeight;
-				const sidebarHeight = asideInner.offsetHeight;
+		let aside;
 
-				if (sidebarHeight > windowHeight) {
-					asideInner.style.position = 'relative';
-					aside.style.marginTop = '185px'
-				} else {
-					asideInner.style.position = 'sticky';
-					aside.style.marginTop = '202px'
-				}
+		function checkSidebarHeight() {
+			const windowHeight = window.innerHeight;
+			const sidebarHeight = asideInner.offsetHeight;
+
+			if (sidebarHeight > windowHeight) {
+				asideInner.style.position = 'relative';
+				aside.style.marginTop = '185px'
+			} else {
+				asideInner.style.position = 'sticky';
+				aside.style.marginTop = '202px'
 			}
+		}
+
+		if (asideInner !== null) {
+			aside = document.querySelector('aside')
 			checkSidebarHeight()
 			window.addEventListener('resize', checkSidebarHeight)
 		}
-
-		var lazyLoadInstance = new LazyLoad();
 		
 	</script>
 	
