@@ -115,6 +115,7 @@ REDIRECT_TEMPLATE = """<!DOCTYPE html>
 
   <!-- META -->
   <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
@@ -125,7 +126,9 @@ REDIRECT_TEMPLATE = """<!DOCTYPE html>
   <link rel="stylesheet" href="static/css/custom-css.css">
   <link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
   
-  {% block customcss %}{% endblock %}
+  <!-- CANONICAL URL -->
+  <link rel="canonical" href="{{url}}" />
+  
   <title> {% block title %} {{blog.name}}{% endblock %} </title>
 </head>
 </html>
@@ -224,7 +227,7 @@ class Blog:
             image = page_data.get("image", "")
             if image != '':
                 # TODO: also make this image with my-blog-post.md
-                post_path = fn[len(self.config['content_path']):]. \
+                post_path = fn[len(self.config['content_path']):].\
                     replace('index.md', '')  # /posts/cool-blog-post/
 
                 image = f"{self.config['host']}{post_path}{image}"
@@ -266,7 +269,7 @@ class Blog:
 
                 img_size = os.path.getsize(path) / 1024
                 attempts -= 1
-        except:  # noqa
+        except: # noqa
             print(f"Exception while image '{path}' compression:\n{format_exc()}")
 
     def process_images(self):
@@ -291,7 +294,7 @@ class Blog:
                 for p in self.pages
                 # common tags > 0 (relevancy by tag amount)
                 if len(Counter(page.tags) & Counter(p.tags)) > 0
-                   and p != page
+                and p != page
             ]
             for tag in page.tags:
                 self.tags.append(tag)
@@ -346,17 +349,19 @@ class Blog:
             return
 
         for alias in page.aliases:
-            print(f"Writing '{alias}' alias..")
-            alias_path = alias.split(".")[0] if os.path.isfile(alias) else alias
+            alias_path = alias.strip().lower()
+            if not alias_path:
+                continue
+
+            print(f"Writing '{alias_path}' alias..")
             mkdir(f"{self.config['tmp']}/{alias_path}")
+
             env = Environment(loader=BaseLoader())
             write(
                 f'{self.config["tmp"]}/{alias_path}/index.html',
                 html_minify(env.from_string(REDIRECT_TEMPLATE).render(
                     blog=self,
-                    page=page,
                     url=page.url,
-                    blog_url=f"{self.config['host']}/",
                 )),
             )
 
@@ -475,7 +480,7 @@ def build(config):
         main(c)
 
         print("Ok")
-    except:  # noqa
+    except: # noqa
         print("Error happened when compiling")
         print(format_exc())
 
@@ -510,7 +515,7 @@ def print_it(config):
             ))
 
         print("Ok")
-    except:  # noqa
+    except: # noqa
         print("Error happened when compiling")
         print(format_exc())
 
