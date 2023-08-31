@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-{% from './macros.html' import blog_card %}
 <head>
 	<base href="{{blog.config.host}}/">
 
@@ -22,21 +21,7 @@
 </head>
 <body>
 	<div style="flex: 1;">
-		<nav class="main-nav">
-			<div class="nav-inner">
-				<a href="{{blog_url}}" class="logo">
-					<img class="lazy" data-src="{{blog.config.host}}/{{blog.logo}}" alt="">
-				</a>
-				<div class="nav-links">
-					{% include "navlinks.html" %}
-				</div>
-				<div class="hamburger-menu">
-					<div class="line line1"></div>
-					<div class="line line2"></div>
-					<div class="line line3"></div>
-				</div>
-			</div>
-		</nav>
+		{% include "navbar.html" %}
 		<div class="blogs-content-wrapper">
 			<div class="page-content">
 				<header>
@@ -52,75 +37,57 @@
 						{% endif %}
 
 						{% if page.image %}
-							<img class="lazy" data-src="{{page.image}}" alt="{{page.image}}">
+							<img class="lozad" data-src="{{page.image}}" alt="{{page.image}}">
 						{% endif %}
 					</div>
 				</header>
-<div class="blog-content">
-	{{ page.body_html|safe }}
-	<div class="tags">
-		{% for tag in page.tags %}
-			<a href="{{tag.url}}">{{tag.title}}</a>	
-		{% endfor %}
-	</div>
-</div>
-<hr style="background-color: #000;margin: 1rem 0;">
-<div class="share-section">
-	<p>{% if page.author %}{{ page.author }}{% else %}{{blog.title}}{% endif %}</p>
-	<button class="white-sm-button share-btn">Share</button>
-</div>
+				<div class="blog-content">
+					{{ page.body_html|safe }}
+
+					<div class="tags">
+						{% for tag in page.tags %}
+							<a href="{{tag.url}}">{{tag.title}}</a>	
+						{% endfor %}
+					</div>
+				</div>
+				{% include "share-page-section.html" %}
 			</div>
 			{% include "sidebar.html" %}
 		</div>
 	</div>
 
-	{% if page.related %}
-		<div class="related-section">
-			<div class="related-section-inner">
-				<h2>You might also like</h2>
-				<p>Explore more similar articles below</p>
-				<div class="blog-list">
-					{{blog_card(page.related, 'var(--primary-clr-1)')}}
-				</div>
-			</div>
-		</div>
-	{% endif %}
+	{% include "related-blogs.html" %}
 
-	<footer>
-		<div class="footer-inner">
-			{% include "socials.html" %}
-			<!-- Consider not to remove this as this is free and open source -->
-			<p>Powered By TigerBlogEngine Copyright @ 2023 <a href="https://TigerTeamX.com">TigerTeamX.com</a></p>
-		</div>
-	</footer>
+	{% include "footer.html" %}
 
-	<script src="static/js/lazyload.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
 	<script>
 		const nav = document.querySelector('.main-nav')
 		const hamburger = document.querySelector('.hamburger-menu')
 		hamburger.addEventListener('click', () => nav.classList.toggle('show-nav'))
 
-		const asideInner = document.querySelector('aside .aside-inner')
-		if (asideInner !== null) {
-			const aside = document.querySelector('aside')
-			function checkSidebarHeight() {
-				const windowHeight = window.innerHeight;
-				const sidebarHeight = asideInner.offsetHeight;
+		const observer = lozad();
+		observer.observe();
 
-				if (sidebarHeight > windowHeight) {
-					asideInner.style.position = 'relative';
-					aside.style.marginTop = '185px'
-				} else {
-					asideInner.style.position = 'sticky';
-					aside.style.marginTop = '202px'
-				}
+		const asideInner = document.querySelector('aside .aside-inner')
+		let aside;
+		function checkSidebarHeight() {
+			const windowHeight = window.innerHeight;
+			const sidebarHeight = asideInner.offsetHeight;
+
+			if (sidebarHeight > windowHeight) {
+				asideInner.style.position = 'relative';
+				aside.style.marginTop = '185px'
+			} else {
+				asideInner.style.position = 'sticky';
+				aside.style.marginTop = '202px'
 			}
+		}
+		if (asideInner !== null) {
+			aside = document.querySelector('aside')
 			checkSidebarHeight()
 			window.addEventListener('resize', checkSidebarHeight)
 		}
-
-		var lazyLoadInstance = new LazyLoad();
-		
 	</script>
 	
 	<script>
