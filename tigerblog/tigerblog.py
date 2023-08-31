@@ -20,7 +20,6 @@ from slugify import slugify
 from jinja2 import Environment, FileSystemLoader, select_autoescape, BaseLoader
 from docopt import docopt
 
-
 LIB_DIR = os.path.split(__file__)[0]
 
 
@@ -49,6 +48,7 @@ class Page:
     image: str
     tags: List[Tag]
     related: List[Self]
+    aliases: List[str]
 
     def __hash__(self):
         return hash((self.title, self.dst, self.url))
@@ -87,26 +87,6 @@ def read_page(path):
     defaults.update(data)
     defaults['date'] = datetime.strptime(defaults['date'], "%Y-%m-%d")
     return defaults
-
-
-SITEMAP_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">	
-	<url>
-        <loc>{{url}}</loc>
-        <lastmod>{{today.strftime("%Y-%m-%d")}}</lastmod>
-	</url>
-	{% for page in pages %}
-	<url>
-        <loc>{{page.url}}</loc>
-        <lastmod>{{page.date.strftime("%Y-%m-%d")}}</lastmod>
-	</url>
-	{% endfor %}
-	{% for tag in tags %}
-	<url>
-		<loc>{{tag.url}}</loc>
-	</url>
-	{% endfor %}
-</urlset>""" # noqa
 
 
 def markdown(text):
@@ -219,6 +199,7 @@ class Blog:
                 dst=dst,
                 url=f"{self.config['host']}{path}/",
                 related=[],
+                aliases=page_data.get('aliases', []),
             ))
 
     def compress_image(self, path):
@@ -315,6 +296,26 @@ class Blog:
                 )),
             )
 
+            self.write_page_aliases(page)
+
+    def write_page_aliases(self, page):
+        for alias in page.aliases:
+            alias_path = alias.strip().lower()
+            if not alias_path:
+                continue
+
+            print(f"Writing '{alias_path}' alias..")
+            mkdir(f"{self.config['tmp']}/{alias_path}")
+
+            template = self.get_template("redirect.html")
+            write(
+                f'{self.config["tmp"]}/{alias_path}/index.html',
+                html_minify(template.render(
+                    blog=self,
+                    url=page.url,
+                )),
+            )
+
     def copy_files(self):
         print("Coyping files..")
         for file in self.files:
@@ -328,17 +329,18 @@ class Blog:
     def write_sitemap(self, extra_sitemaps=[]):
         print("Writing sitemap..")
         pages = list(self.pages) + extra_sitemaps
-        env = Environment(loader=BaseLoader())
-
-        with open(f"{self.config['tmp']}/sitemap.xml", "w") as f:
-            f.write(env.from_string(SITEMAP_TEMPLATE).render(
+        template = self.get_template("sitemap.xml")
+        write(
+            f"{self.config['tmp']}/sitemap.xml",
+            template.render(
                 blog=self,
                 pages=pages,
                 tags=self.tags,
                 today=datetime.today(),
                 blog_url=f"{self.config['host']}/",
                 url=f"{self.config['host']}/",
-            ))
+            ),
+        )
 
     def save_custom_static_images(self, attrs: dict):
         for attr, default in attrs.items():
