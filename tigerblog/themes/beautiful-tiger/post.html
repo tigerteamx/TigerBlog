@@ -209,12 +209,3 @@
 
 </body>
 </html>
-
-
-
-{% block aside %}
-	<b>Tags:</b> <br>
-	{% for tag in page.tags %}
-		<a href="{{tag.url}}">{{tag.title}}</a>	
-	{% endfor %}
-{% endblock %}
