@@ -5,5 +5,5 @@
 	"output": "dist",
 	"theme": "themes/beautiful-tiger",
 	"host": "http://localhost:8000",
-	"blogOwnerName": "TigerBlog"
+	"defaultAuthor": "TigerBlog"
 }

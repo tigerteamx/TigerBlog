@@ -1,20 +1,45 @@
-{% extends "master.html" %}
+<!DOCTYPE html>
+<html lang="en">
 {% from './macros.html' import blog_card %}
+<head>
+	<base href="{{blog.config.host}}/">
 
-{% block customcss %}
+	<!-- META -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% endblock %}
+	<!-- LINKS -->
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="static/css/custom-css.css">
+	<link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
+	
+	<title>{{blog.title}}</title>
 
-{% block title %}
-{{blog.title}}
-{% endblock %}
+	{% include 'seo_tags_listings.html' %}
+	<plugins></plugins>
+</head>
+<body>
+	<div style="flex: 1;">
+		{% include "navbar.html" %}
+		<div class="blogs-content-wrapper">
+			<div class="page-content">
+				<header>
+					<div class="header-inner">
+						{% include "intro.html" %}
+					</div>
+				</header>
+				<div class="blog-list">
+					{{blog_card(pages)}}
+				</div>
+			</div>
+			{% include "sidebar.html" %}
+		</div>
+	</div>
 
-{% block header %}
-{% include "intro.html" %}
-{% endblock %}
+	{% include "footer.html" %}
 
-{% block body %}
-<div class="blog-list">
-	{{blog_card(pages)}}
-</div>
-{% endblock %}
+	{% include "javascript.html" %}
+
+</body>
+</html>

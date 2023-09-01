@@ -1,0 +1,13 @@
+{% from './macros.html' import blog_card %}
+
+{% if page.related %}
+    <div class="related-section">
+        <div class="related-section-inner">
+            <h2>You might also like</h2>
+            <p>Explore more similar articles below</p>
+            <div class="blog-list">
+                {{blog_card(page.related, 'var(--primary-clr-1)')}}
+            </div>
+        </div>
+    </div>
+{% endif %}

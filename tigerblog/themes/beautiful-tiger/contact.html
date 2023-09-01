@@ -1,53 +1,72 @@
-{% extends "master.html" %}
+<!DOCTYPE html>
+<html lang="en">
+{% from './macros.html' import blog_card %}
+<head>
+	<base href="{{blog.config.host}}/">
 
-{% block customcss %}
-<link rel="stylesheet" href="static/css/style.css">
-{% endblock %}
+	<!-- META -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block title %} {{page.title}} {% endblock %}
+	<!-- LINKS -->
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="static/css/custom-css.css">
+	<link rel="icon" type="image/x-icon" href="{{blog.favicon}}">
+    <link rel="stylesheet" href="static/css/single-blog.css">
+	
+	<title>{{page.title}}</title>
 
-{% block header %}
-<h1>{{ page.title }}</h1>
-<p>Fill up the form and the team will get back you to within 24 hrs</p>
-{% endblock %}
+	{% include 'seo_tags_post.html' %}
+	<plugins></plugins>
+</head>
+<body>
+    <div style="flex: 1;">
+		{% include "navbar.html" %}
+		<div class="blogs-content-wrapper">
+			<div class="page-content">
+				<header>
+					<div class="header-inner">
+						<h1>{{ page.title }}</h1>
+                        <p>Fill up the form and the team will get back you to within 24 hrs</p>
+					</div>
+				</header>
+                <div class="blog-content">
+                    <form action="">
+                        <div class="two-column">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input id="firstName" type="text" placeholder="Will Smith" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input id="lastName" type="text" placeholder="Will Smith" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" placeholder="willsmith@example.com" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number">Phone Number</label>
+                            <input id="phone-number" type="tel" placeholder="+123456789" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message"></textarea>
+                        </div>
+                        <button class="btn btn-orange">Send Message</button>
+                    </form>
+                </div>
+                {% include "share-page-section.html" %}
+			</div>
+			{% include "sidebar.html" %}
+		</div>
+	</div>
 
-{% block aside %}
-	<b>Tags:</b> <br>
-	{% for tag in page.tags %}
-		<a href="{{tag.url}}">{{tag.title}}</a>	
-	{% endfor %}
-{% endblock %}
+	{% include "related-blogs.html %}
 
-{% block body %}
-<div class="blog-content">
-	<form action="">
-        <div class="two-column">
-            <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input id="firstName" type="text" placeholder="Will Smith" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input id="lastName" type="text" placeholder="Will Smith" autocomplete="off">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="willsmith@example.com" autocomplete="off">
-        </div>
-        <div class="form-group">
-            <label for="phone-number">Phone Number</label>
-            <input id="phone-number" type="tel" placeholder="+123456789" autocomplete="off">
-        </div>
-        <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message"></textarea>
-        </div>
-        <button class="btn btn-orange">Send Message</button>
-    </form>
-</div>
-{% endblock body %}
+	{% include "footer.html" %}
 
-{% block customjs %}
-
-{% endblock %}
+	{% include "javascript.html" %}
+</body>
