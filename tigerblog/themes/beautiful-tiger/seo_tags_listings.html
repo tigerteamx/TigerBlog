@@ -20,11 +20,7 @@
 {% if blog.config.bingVerificationCode %}<meta name="bing-site-verification" content="{{ blog.config.bingVerificationCode }}" />{% endif %}
 
 <!-- CANONICAL URL -->
-{% if page.canon %} 
-<link rel="canonical" href="{{ page.canon }}">
-{% else %}
 <link rel="canonical" href="{{url}}" />
-{% endif %} 
 
 <!-- JSON LD -->
 <script type="application/ld+json">
