@@ -201,6 +201,7 @@ class Blog:
                 url=f"{self.config['host']}{path}/",
                 related=[],
                 aliases=page_data.get('aliases', []),
+                canon=page_data.get("canon", ""),
             ))
 
     def compress_image(self, path):
