@@ -49,6 +49,7 @@ class Page:
     tags: List[Tag]
     related: List[Self]
     aliases: List[str]
+    canon: str
 
     def __hash__(self):
         return hash((self.title, self.dst, self.url))
