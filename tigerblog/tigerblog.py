@@ -49,6 +49,7 @@ class Page:
     tags: List[Tag]
     related: List[Self]
     aliases: List[str]
+    canon: str
 
     def __hash__(self):
         return hash((self.title, self.dst, self.url))
@@ -200,6 +201,7 @@ class Blog:
                 url=f"{self.config['host']}{path}/",
                 related=[],
                 aliases=page_data.get('aliases', []),
+                canon=page_data.get('canon', ''),
             ))
 
     def compress_image(self, path):

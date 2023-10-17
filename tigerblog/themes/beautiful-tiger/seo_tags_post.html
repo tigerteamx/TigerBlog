@@ -1,5 +1,5 @@
 <!-- META TAGS -->
-<meta name="title" content="{{page.title}}">
+<meta name="title" content="{{page.title}} '{{ canon }}'">
 <meta name="keywords" content="{% for tag in page.tags %}{%if not loop.first %},{% endif %}{{ tag.title }}{% endfor %}"/>
 <meta name="description" content="{{page.description}}">	
 <!-- Open Graph / Facebook -->
@@ -20,7 +20,11 @@
 {% if blog.config.bingVerificationCode %}<meta name="bing-site-verification" content="{{ blog.config.bingVerificationCode }}" />{% endif %}
 
 <!-- CANONICAL URL -->
+{% if page.canon %} 
+<link rel="canonical" href="{{ page.canon }}">
+{% else %}
 <link rel="canonical" href="{% if page.url %}{{page.url}}{% else %}{{blog.config.host}}{% endif %}" />
+{% endif %} 
 
 <!-- JSON LD -->
 <script type="application/ld+json">
