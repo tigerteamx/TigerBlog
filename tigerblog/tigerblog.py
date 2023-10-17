@@ -140,7 +140,7 @@ class Blog:
 
         self.tags = []
         self.env = Environment(
-            loader=FileSystemLoader(["templates/", self.config['theme']]),
+            loader=FileSystemLoader([self.config['templates'], self.config['theme']]),
             autoescape=select_autoescape(),
         )
 

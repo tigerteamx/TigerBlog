@@ -12,7 +12,7 @@ setuptools.setup(
         'tigerblog': ['default_config.json', 'themes/*'],
         'tigerblog.themes.abc': ["**"],
     },
-    version="0.1.34",
+    version="0.1.39",
     author="Martin F",
     author_email="pypi.org@tigerteamx.com",
     description="Simplest Blog Engine for Developers",
