@@ -50,6 +50,7 @@ class Page:
     related: List[Self]
     aliases: List[str]
     canon: str
+    faq: List[dict]
 
     def __hash__(self):
         return hash((self.title, self.dst, self.url))
@@ -202,6 +203,7 @@ class Blog:
                 related=[],
                 aliases=page_data.get('aliases', []),
                 canon=page_data.get('canon', ''),
+                faq=page_data.get('faq', []),
             ))
 
     def compress_image(self, path):
